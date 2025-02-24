@@ -26,7 +26,7 @@ class ArticleFactory extends Factory
             'article_url' => $this->faker->url() . "/" . $this->faker->uuid(),
             'image_url' => $this->faker->imageUrl(),
             'published_at' => $publishedAt,
-            'source_id' => $this->faker->randomElement([1, 2]),
+            'source_id' => fn() => Source::factory(),
             'category_id' => fn() => Category::factory(),
             'author_id' => fn() => Author::factory(),
             'created_at' => $publishedAt->addDay(),

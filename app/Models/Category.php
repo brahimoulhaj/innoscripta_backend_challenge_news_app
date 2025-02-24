@@ -12,6 +12,8 @@ class Category extends Model
 
     protected $fillable = ['name', 'slug'];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);

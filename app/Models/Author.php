@@ -12,6 +12,8 @@ class Author extends Model
 
     protected $fillable = ['name'];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);

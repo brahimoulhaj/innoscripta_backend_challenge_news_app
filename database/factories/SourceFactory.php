@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Source>
  */
-class CategoryFactory extends Factory
+class SourceFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,10 +16,10 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-        $name = $this->faker->unique()->sentence(random_int(1, 3));
         return [
-            'name' => $name,
-            'slug' => str()->slug($name)
+            'name' => $this->faker->company(),
+            'url' => $this->faker->unique()->url(),
+            'api_key' => $this->faker->uuid(),
         ];
     }
 }
