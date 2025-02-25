@@ -9,12 +9,12 @@ use App\Models\Source;
 
 class UserPreferenceController extends Controller
 {
-
     public function show()
     {
         $user = request()->user();
+
         return response()->json([
-            'data' => $user->preferences
+            'data' => $user->preferences,
         ]);
     }
 

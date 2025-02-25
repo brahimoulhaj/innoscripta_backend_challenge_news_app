@@ -68,23 +68,41 @@ it('can filter articles by source, category and author', function () {
 
     expect(Article::count())->toBe(15);
 
-    $this->getJson(route('articles.index', ['source' => 'The Guardian']))->assertJsonCount(4, 'data');
-    $this->getJson(route('articles.index', ['source' => 'News API']))->assertJsonCount(6, 'data');
+    $this->getJson(route('articles.index', [
+        'filters' => 'source.name:The Guardian',
+    ]))->assertJsonCount(4, 'data');
 
-    $this->getJson(route('articles.index', ['category' => 'Category 1']))->assertJsonCount(3, 'data');
-    $this->getJson(route('articles.index', ['category' => 'Category 2']))->assertJsonCount(3, 'data');
-    $this->getJson(route('articles.index', ['category' => 'Category 3']))->assertJsonCount(4, 'data');
-    $this->getJson(route('articles.index', ['category' => 'Category 4']))->assertJsonCount(0, 'data');
+    $this->getJson(route('articles.index', [
+        'filters' => 'source.name:News API',
+    ]))->assertJsonCount(6, 'data');
 
-    $this->getJson(route('articles.index', ['author' => 'Author 1']))->assertJsonCount(3, 'data');
-    $this->getJson(route('articles.index', ['author' => 'Author 2']))->assertJsonCount(4, 'data');
-    $this->getJson(route('articles.index', ['author' => 'Author 3']))->assertJsonCount(3, 'data');
-    $this->getJson(route('articles.index', ['author' => 'Author 4']))->assertJsonCount(0, 'data');
+    $this->getJson(route('articles.index', [
+        'filters' => 'category.name:Category 1',
+    ]))->assertJsonCount(3, 'data');
 
-    $this->getJson(route('articles.index', ['source' => 'The Guardian', 'category' => 'Category 1', 'author' => 'Author 1']))
-        ->assertJsonCount(1, 'data');
-    $this->getJson(route('articles.index', ['source' => 'News API', 'category' => 'Category 3', 'author' => 'Author 2']))
-        ->assertJsonCount(4, 'data');
+    $this->getJson(route('articles.index', [
+        'filters' => 'category.name:Category 2',
+    ]))->assertJsonCount(3, 'data');
+
+    $this->getJson(route('articles.index', [
+        'filters' => 'category.name:Category 1,Category 2',
+    ]))->assertJsonCount(6, 'data');
+
+    $this->getJson(route('articles.index', [
+        'filters' => 'author:Author 1',
+    ]))->assertJsonCount(3, 'data');
+
+    $this->getJson(route('articles.index', [
+        'filters' => 'author:Author 2',
+    ]))->assertJsonCount(4, 'data');
+
+    $this->getJson(route('articles.index', [
+        'filters' => 'source.name:The Guardian;category.name:Category 1;author:Author 1',
+    ]))->assertJsonCount(1, 'data');
+
+    $this->getJson(route('articles.index', [
+        'filters' => 'source.name:News API;category.name:Category 3;author:Author 2',
+    ]))->assertJsonCount(4, 'data');
 });
 
 it('can filter articles by date range', function () {
@@ -94,16 +112,14 @@ it('can filter articles by date range', function () {
     expect(Article::count())->toBe(8);
 
     $this->getJson(route('articles.index', [
-        'from-date' => now()->subDays(3)->format('Y-m-d'),
+        'filters' => 'published_at:'.now()->subDays(3)->format('Y-m-d'),
     ]))->assertJsonCount(5, 'data');
 
     $this->getJson(route('articles.index', [
-        'from-date' => now()->subDays(7)->format('Y-m-d'),
-        'to-date' => now()->subDays(4)->format('Y-m-d'),
+        'filters' => 'published_at:'.now()->subDays(7)->format('Y-m-d').','.now()->subDays(4)->format('Y-m-d'),
     ]))->assertJsonCount(3, 'data');
 
     $this->getJson(route('articles.index', [
-        'from-date' => now()->format('Y-m-d'),
-        'to-date' => now()->format('Y-m-d'),
+        'filters' => 'published_at:'.now()->format('Y-m-d').','.now()->format('Y-m-d'),
     ]))->assertJsonCount(0, 'data');
 });

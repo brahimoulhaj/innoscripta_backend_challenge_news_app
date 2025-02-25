@@ -18,6 +18,8 @@ class ArticlePreferenceController extends Controller
                     ->orWhereIn('category_id', $preferences->preferred_categories ?? [])
                     ->orWhereIn('author', $preferences->preferred_authors ?? []);
             })
+            ->filter(request('filters'))
+            ->search(request('search'))
             ->orderByDesc('published_at')
             ->paginate()
             ->withQueryString();

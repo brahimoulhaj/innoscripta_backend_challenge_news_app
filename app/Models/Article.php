@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\Filterable;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Article extends Model
 {
-    use HasFactory;
+    use Filterable, HasFactory, Searchable;
 
     protected $fillable = [
         'title',
@@ -30,5 +32,20 @@ class Article extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    protected function getFilterableColumns(): array
+    {
+        return [
+            'category.name' => 'relationship',
+            'source.name' => 'relationship',
+            'author' => 'string',
+            'published_at' => 'date',
+        ];
+    }
+
+    protected function getSearchableColumns(): array
+    {
+        return ['title', 'summary'];
     }
 }
