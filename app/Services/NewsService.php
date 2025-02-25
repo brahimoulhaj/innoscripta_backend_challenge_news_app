@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\NewsSourceInterface;
 use App\Models\Source;
 use App\Services\Sources\NewsApiSource;
+use App\Services\Sources\NewYorkTimesApiSource;
 use App\Services\Sources\TheGuardianApiSource;
 use Illuminate\Support\Str;
 
@@ -33,7 +34,7 @@ class NewsService
         $handlers = [
             'news-api' => NewsApiSource::class,
             'the-guardian' => TheGuardianApiSource::class,
-            // 'New York Times' => NewYorkTimesSource::class
+            'new-york-times' => NewYorkTimesApiSource::class
         ];
 
         $handlerClass = $handlers[Str::slug($source->name)] ?? null;
