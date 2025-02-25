@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Source extends Model
 {
-
     use HasFactory;
 
     protected $fillable = [
-        "name",
-        "url",
-        "api_key"
+        'name',
+        'url',
+        'api_key',
     ];
 
     protected $hidden = ['created_at', 'updated_at', 'api_key'];
@@ -22,7 +21,7 @@ class Source extends Model
     protected function casts(): array
     {
         return [
-            "api_key" => "encrypted"
+            'api_key' => 'encrypted',
         ];
     }
 

@@ -16,7 +16,7 @@ test('to array', function () {
         'email',
         'email_verified_at',
         'created_at',
-        'updated_at'
+        'updated_at',
     ]);
 });
 
@@ -31,5 +31,5 @@ it('has preferences', function () {
     $user = User::factory()->create();
     $preferences = UserPreference::factory()->create(['user_id' => $user->id]);
 
-    expect((int)$user->preferences->id)->toBe((int)$preferences->id);
+    expect((int) $user->preferences->id)->toBe((int) $preferences->id);
 });

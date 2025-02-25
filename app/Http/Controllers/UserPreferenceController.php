@@ -23,10 +23,10 @@ class UserPreferenceController extends Controller
             [
                 'preferred_sources' => $request->preferred_sources,
                 'preferred_categories' => $request->preferred_categories,
-                'preferred_authors' => $request->preferred_authors
+                'preferred_authors' => $request->preferred_authors,
             ]
         );
-        
+
         return response()->json(['message' => 'Preferences saved']);
     }
 }

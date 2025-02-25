@@ -12,23 +12,16 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        if(request()->has('from_date')) {
-            dd("yes");
-        }
-        $articles = Article::with(['category', 'author', 'source'])
+        $articles = Article::with('source')
             ->when(request()->filled('search'), function ($query) {
-                $query->whereLike('title', "%" . request('search') . "%")
-                    ->orWhereLike('summary', "%" . request('search') . "%");
+                $query->whereLike('title', '%'.request('search').'%')
+                    ->orWhereLike('summary', '%'.request('search').'%');
             })
             ->when(request()->filled('category'), function ($query) {
-                $query->whereHas('category', function ($query) {
-                    $query->where('name', request('category'));
-                });
+                $query->where('category', request('category'));
             })
             ->when(request()->filled('author'), function ($query) {
-                $query->whereHas('author', function ($query) {
-                    $query->where('name', request('author'));
-                });
+                $query->where('author', request('author'));
             })
             ->when(request()->filled('source'), function ($query) {
                 $query->whereHas('source', function ($query) {
@@ -54,6 +47,7 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         $article->load(['category', 'author', 'source']);
+
         return new ArticleResource($article);
     }
 }

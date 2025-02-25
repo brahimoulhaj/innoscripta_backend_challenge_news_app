@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Article;
-use App\Models\Author;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,10 +18,10 @@ test('to array', function () {
         'image_url',
         'published_at',
         'source_id',
-        'category_id',
-        'author_id',
+        'category',
+        'author',
         'created_at',
-        'updated_at'
+        'updated_at',
     ]);
 });
 
@@ -39,30 +38,8 @@ test('can be added to database', function () {
         'image_url' => $article->image_url,
         'published_at' => $article->published_at,
         'source_id' => $article->source_id,
-        'category_id' => $article->category_id,
-        'author_id' => $article->author_id,
-    ]);
-});
-
-test('belongs to category', function () {
-    $article = Article::factory()->create()->fresh();
-
-    expect(value: $article->category)->not->toBeNull();
-
-    $this->assertDatabaseHas('articles', [
-        'id' => $article->id,
-        'category_id' => $article->category->id
-    ]);
-});
-
-test('belongs to author', function () {
-    $article = Article::factory()->create()->fresh();
-
-    expect(value: $article->author)->not->toBeNull();
-
-    $this->assertDatabaseHas('articles', [
-        'id' => $article->id,
-        'author_id' => $article->author->id
+        'category' => $article->category,
+        'author' => $article->author,
     ]);
 });
 
@@ -73,6 +50,6 @@ test('belongs to source', function () {
 
     $this->assertDatabaseHas('articles', [
         'id' => $article->id,
-        'source_id' => $article->source->id
+        'source_id' => $article->source->id,
     ]);
 });

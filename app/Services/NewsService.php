@@ -9,13 +9,14 @@ use Illuminate\Support\Str;
 
 class NewsService
 {
-
     public function fetchNews()
     {
         $sources = Source::all();
         foreach ($sources as $source) {
             $handler = $this->resolveSourceHandler($source);
-            if(!$handler) continue;
+            if (! $handler) {
+                continue;
+            }
             $data = $handler->fetch($source);
             $articles = $handler->transform($data);
             dd($articles);
@@ -32,11 +33,11 @@ class NewsService
 
         $handlerClass = $handlers[Str::slug($source->name)] ?? null;
 
-        if (!$handlerClass) {
+        if (! $handlerClass) {
             return null;
             // throw new \Exception("No handler for source: {$source->name}");
         }
 
-        return new $handlerClass();
+        return new $handlerClass;
     }
 }

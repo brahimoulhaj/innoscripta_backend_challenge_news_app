@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('image_url');
             $table->timestamp('published_at');
             $table->foreignId('source_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('author_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('category')->nullable();
+            $table->string('author')->nullable();
             $table->timestamps();
         });
     }

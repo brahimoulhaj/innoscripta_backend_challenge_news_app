@@ -25,8 +25,8 @@ class ArticleResource extends JsonResource
             'published_at' => $this->published_at,
             'published_at_hum' => Carbon::parse($this->published_at)->diffForHumans(),
             'source' => $this->whenLoaded('source'),
-            'category' => $this->whenLoaded('category'),
-            'author' => $this->whenLoaded('author'),
+            'category' => $this->category,
+            'author' => $this->author,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
