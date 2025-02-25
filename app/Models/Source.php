@@ -17,6 +17,8 @@ class Source extends Model
         "api_key"
     ];
 
+    protected $hidden = ['created_at', 'updated_at', 'api_key'];
+
     protected function casts(): array
     {
         return [

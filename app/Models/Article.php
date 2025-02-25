@@ -5,12 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Searchable;
 
 class Article extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
+
     protected $fillable = [
         'title',
+        'slug',
         'summary',
         'article_url',
         'image_url',
@@ -33,5 +37,14 @@ class Article extends Model
     public function source(): BelongsTo
     {
         return $this->belongsTo(Source::class);
+    }
+
+    #[SearchUsingFullText(['title', 'summary'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'summary' => $this->summary,
+        ];
     }
 }

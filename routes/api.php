@@ -1,8 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\UserPreferenceController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('user/preferences', UserPreferenceController::class)->name('preferences.store');
 });

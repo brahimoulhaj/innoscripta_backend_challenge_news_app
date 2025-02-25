@@ -13,6 +13,7 @@ test('to array', function () {
     expect(array_keys($article->toArray()))->toBe([
         'id',
         'title',
+        'slug',
         'summary',
         'article_url',
         'image_url',

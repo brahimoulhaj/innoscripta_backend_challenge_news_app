@@ -22,6 +22,7 @@ class ArticleFactory extends Factory
         $publishedAt = now()->subHours(random_int(0, 24 * 365));
         return [
             'title' => $this->faker->sentence(),
+            'slug' => $this->faker->unique()->slug(),
             'summary' => $this->faker->paragraph(),
             'article_url' => $this->faker->url() . "/" . $this->faker->uuid(),
             'image_url' => $this->faker->imageUrl(),
