@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\NewsSourceInterface;
 use App\Models\Source;
 use App\Services\Sources\NewsApiSource;
+use App\Services\Sources\TheGuardianApiSource;
 use Illuminate\Support\Str;
 
 class NewsService
@@ -19,7 +20,7 @@ class NewsService
             if (! $handler) {
                 continue;
             }
-            $data = $handler->fetch($source);
+            $data = $handler->fetch($source, 'technology');
             $articles = $handler->transform($data);
             $news = array_merge($news, $articles);
         }
@@ -31,7 +32,7 @@ class NewsService
     {
         $handlers = [
             'news-api' => NewsApiSource::class,
-            // 'The Guardian' => GuardianSource::class,
+            'the-guardian' => TheGuardianApiSource::class,
             // 'New York Times' => NewYorkTimesSource::class
         ];
 

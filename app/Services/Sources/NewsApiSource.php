@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Log;
 class NewsApiSource implements NewsSourceInterface
 {
     private Source $source;
+    private string $category;
 
-    private string $category = 'ai';
-
-    public function fetch(Source $source): array
+    public function fetch(Source $source, string $category): array
     {
         $this->source = $source;
+        $this->category = $category;
         $response = Http::get(url: $source->url.'/everything', query: [
             'apiKey' => $source->api_key,
             'q' => $this->category,
