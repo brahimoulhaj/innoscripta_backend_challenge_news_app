@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\NewsSourceInterface;
+use App\Models\Category;
 use App\Models\Source;
 use App\Services\Sources\NewsApiSource;
 use App\Services\Sources\NewYorkTimesApiSource;
@@ -17,18 +18,21 @@ class NewsService
     public function fetchNews()
     {
         $sources = Source::all();
+        $categories = Category::all();
 
         $news = [];
-        foreach ($sources as $source) {
-            $handler = $this->resolveSourceHandler($source);
-            if (! $handler) {
-                continue;
-            }
-            $data = $handler->fetch($source, 'technology');
-            $articles = $handler->transform($data);
-            $news = array_merge($news, $articles);
+        foreach ($categories as $category) {
+            foreach ($sources as $source) {
+                $handler = $this->resolveSourceHandler($source);
+                if (! $handler) {
+                    continue;
+                }
+                $data = $handler->fetch($source, $category);
+                $articles = $handler->transform($data);
+                $news = array_merge($news, $articles);
 
-            info($handler::class . " -- " . count($articles));
+                info($handler::class.' -- '.$category->name.' -- '.count($articles));
+            }
         }
 
         return $news;
@@ -39,7 +43,7 @@ class NewsService
         $handlers = [
             'the-guardian' => TheGuardianApiSource::class,
             'news-api' => NewsApiSource::class,
-            'new-york-times' => NewYorkTimesApiSource::class
+            'new-york-times' => NewYorkTimesApiSource::class,
         ];
 
         $handlerClass = $handlers[Str::slug($source->name)] ?? null;
@@ -47,6 +51,7 @@ class NewsService
         if (! $handlerClass) {
             // throw new \Exception("No handler for source: {$source->name}");
             Log::error("No handler for source: {$source->name}");
+
             return null;
         }
 

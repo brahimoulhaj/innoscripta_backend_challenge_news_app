@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Source;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,7 +28,7 @@ class ArticleFactory extends Factory
             'image_url' => $this->faker->imageUrl(),
             'published_at' => $publishedAt,
             'source_id' => fn () => Source::factory(),
-            'category' => $this->faker->word(),
+            'category_id' => fn () => Category::factory(),
             'author' => $this->faker->name(),
             'created_at' => $publishedAt->addDay(),
             'updated_at' => $publishedAt->addDay(),

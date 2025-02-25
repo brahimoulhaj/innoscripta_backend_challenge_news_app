@@ -18,7 +18,10 @@ class ArticleController extends Controller
                     ->orWhereLike('summary', '%'.request('search').'%');
             })
             ->when(request()->filled('category'), function ($query) {
-                $query->where('category', request('category'));
+                $query->whereHas(
+                    'category',
+                    fn ($query) => $query->where('name', request('category')),
+                );
             })
             ->when(request()->filled('author'), function ($query) {
                 $query->where('author', request('author'));

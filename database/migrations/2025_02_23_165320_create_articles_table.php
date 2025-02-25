@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('summary');
             $table->string('article_url')->unique();
-            $table->string('image_url')->nullable();
+            $table->mediumText('image_url')->nullable();
             $table->timestamp('published_at');
             $table->foreignId('source_id')->constrained()->cascadeOnDelete();
-            $table->string('category')->nullable();
+            $table->foreignId('category_id')->constrained();
             $table->string('author')->nullable();
             $table->timestamps();
         });

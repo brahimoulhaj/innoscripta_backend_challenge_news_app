@@ -26,4 +26,9 @@ class Article extends Model
     {
         return $this->belongsTo(Source::class);
     }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

@@ -18,7 +18,7 @@ test('to array', function () {
         'image_url',
         'published_at',
         'source_id',
-        'category',
+        'category_id',
         'author',
         'created_at',
         'updated_at',
@@ -38,7 +38,7 @@ test('can be added to database', function () {
         'image_url' => $article->image_url,
         'published_at' => $article->published_at,
         'source_id' => $article->source_id,
-        'category' => $article->category,
+        'category_id' => $article->category->id,
         'author' => $article->author,
     ]);
 });

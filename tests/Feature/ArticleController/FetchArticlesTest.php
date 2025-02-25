@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\Source;
-use Database\Seeders\SourceSeeder;
 
 it('can fetch articles', function () {
     Article::factory(20)->create();
@@ -50,14 +50,20 @@ it('can search for articles', function () {
 });
 
 it('can filter articles by source, category and author', function () {
-    $this->seed(SourceSeeder::class); // The Guardian -> id:1, News API -> id:2
+    Source::factory()->create(['name' => 'The Guardian']);
+    Source::factory()->create(['name' => 'News API']);
 
     expect(Source::count())->toBe(2);
 
-    Article::factory(1)->create(['source_id' => 1, 'category' => 'Category 1', 'author' => 'Author 1']);
-    Article::factory(3)->create(['source_id' => 1, 'category' => 'Category 2', 'author' => 'Author 3']);
-    Article::factory(2)->create(['source_id' => 2, 'category' => 'Category 1', 'author' => 'Author 1']);
-    Article::factory(4)->create(['source_id' => 2, 'category' => 'Category 3', 'author' => 'Author 2']);
+    $category1 = Category::factory()->create(['name' => 'Category 1']);
+    $category2 = Category::factory()->create(['name' => 'Category 2']);
+    $category3 = Category::factory()->create(['name' => 'Category 3']);
+    $category4 = Category::factory()->create(['name' => 'Category 4']);
+
+    Article::factory(1)->create(['source_id' => 1, 'category_id' => $category1->id, 'author' => 'Author 1']);
+    Article::factory(3)->create(['source_id' => 1, 'category_id' => $category2->id, 'author' => 'Author 3']);
+    Article::factory(2)->create(['source_id' => 2, 'category_id' => $category1->id, 'author' => 'Author 1']);
+    Article::factory(4)->create(['source_id' => 2, 'category_id' => $category3->id, 'author' => 'Author 2']);
     Article::factory(5)->create();
 
     expect(Article::count())->toBe(15);
