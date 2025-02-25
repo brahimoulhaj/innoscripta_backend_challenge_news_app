@@ -14,30 +14,30 @@ class SourceSeeder extends Seeder
     {
         $sources = [];
 
-        if (!empty(env('THE_GUARDIAN_API_KEY'))) {
+        if (! empty(env('THE_GUARDIAN_API_KEY'))) {
             $sources[] = [
                 'id' => 1,
                 'name' => 'The Guardian',
                 'url' => 'https://content.guardianapis.com',
-                'api_key' => encrypt(env('THE_GUARDIAN_API_KEY'), false)
+                'api_key' => encrypt(env('THE_GUARDIAN_API_KEY'), false),
             ];
         }
 
-        if (!empty(env('NEWS_API_API_KEY'))) {
+        if (! empty(env('NEWS_API_API_KEY'))) {
             $sources[] = [
                 'id' => 2,
                 'name' => 'News API',
                 'url' => 'https://newsapi.org/v2',
-                'api_key' => encrypt(env('NEWS_API_API_KEY'), false)
+                'api_key' => encrypt(env('NEWS_API_API_KEY'), false),
             ];
         }
 
-        if (!empty(env('NEW_YORK_TIMES_API_KEY'))) {
+        if (! empty(env('NEW_YORK_TIMES_API_KEY'))) {
             $sources[] = [
                 'id' => 3,
                 'name' => 'New York Times',
                 'url' => 'https://api.nytimes.com/svc/search/v2',
-                'api_key' => encrypt(env('NEW_YORK_TIMES_API_KEY'), false)
+                'api_key' => encrypt(env('NEW_YORK_TIMES_API_KEY'), false),
             ];
         }
 

@@ -33,13 +33,13 @@ trait Filterable
                     if (is_array($filters[$column])) {
                         $query->whereBetween($column, $filters[$column]);
                     } else {
-                        $query->whereDate($column, '>=', (string)$filters[$column]);
+                        $query->whereDate($column, '>=', (string) $filters[$column]);
                     }
                 } elseif ($filterableColumns[$column] === 'relationship') {
                     $value = $filters[$column];
                     $column = explode('.', $column);
                     if (is_array($value)) {
-                        $query->whereHas($column[0], fn($q) => $q->whereIn($column[1], $value));
+                        $query->whereHas($column[0], fn ($q) => $q->whereIn($column[1], $value));
                     } else {
                         $query->whereRelation($column[0], $column[1], $value);
                     }
