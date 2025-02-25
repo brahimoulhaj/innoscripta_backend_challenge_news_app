@@ -12,11 +12,39 @@ class SourceSeeder extends Seeder
      */
     public function run(): void
     {
-        // TODO: find a secure way to write api keys here in the file
-        DB::table('sources')->upsert([
-            ['id' => 1, 'name' => 'The Guardian', 'url' => 'https://content.guardianapis.com', 'api_key' => encrypt('ca3a4eef-f7d8-4459-a4f9-7620d64ffee8', false)],
-            ['id' => 2, 'name' => 'News API', 'url' => 'https://newsapi.org/v2', 'api_key' => encrypt('d0ffb4d37d1249479c5c39a3d7e1db97', false)],
-            ['id' => 3, 'name' => 'New York Times', 'url' => 'https://api.nytimes.com/svc/search/v2', 'api_key' => encrypt('G6H2RLuRyYbENJjzMdVQdesCTzSjLbbl', false)],
-        ], uniqueBy: 'id');
+        $sources = [];
+
+        if (!empty(env('THE_GUARDIAN_API_KEY'))) {
+            $sources[] = [
+                'id' => 1,
+                'name' => 'The Guardian',
+                'url' => 'https://content.guardianapis.com',
+                'api_key' => encrypt(env('THE_GUARDIAN_API_KEY'), false)
+            ];
+        }
+
+        if (!empty(env('NEWS_API_API_KEY'))) {
+            $sources[] = [
+                'id' => 2,
+                'name' => 'News API',
+                'url' => 'https://newsapi.org/v2',
+                'api_key' => encrypt(env('NEWS_API_API_KEY'), false)
+            ];
+        }
+
+        if (!empty(env('NEW_YORK_TIMES_API_KEY'))) {
+            $sources[] = [
+                'id' => 3,
+                'name' => 'New York Times',
+                'url' => 'https://api.nytimes.com/svc/search/v2',
+                'api_key' => encrypt(env('NEW_YORK_TIMES_API_KEY'), false)
+            ];
+        }
+
+        if (count(value: $sources) === 0) {
+            throw new \Exception('Please set at least one of the following environment variables: THE_GUARDIAN_API_KEY, NEWS_API_API_KEY, NEW_YORK_TIMES_API_KEY');
+        }
+
+        DB::table('sources')->upsert($sources, uniqueBy: 'id');
     }
 }
