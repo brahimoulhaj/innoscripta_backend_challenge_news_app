@@ -12,6 +12,8 @@ class NewsService
     public function fetchNews()
     {
         $sources = Source::all();
+
+        $news = [];
         foreach ($sources as $source) {
             $handler = $this->resolveSourceHandler($source);
             if (! $handler) {
@@ -19,8 +21,10 @@ class NewsService
             }
             $data = $handler->fetch($source);
             $articles = $handler->transform($data);
-            dd($articles);
+            $news = array_merge($news, $articles);
         }
+
+        return $news;
     }
 
     private function resolveSourceHandler(Source $source): ?NewsSourceInterface

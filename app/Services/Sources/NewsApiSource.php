@@ -24,7 +24,6 @@ class NewsApiSource implements NewsSourceInterface
         ]);
         if (! $response->successful()) {
             Log::error('NewsApiSource::Error::'.$response->body());
-
             return [];
         }
 
@@ -37,7 +36,7 @@ class NewsApiSource implements NewsSourceInterface
             return [
                 'title' => $article['title'],
                 'slug' => str()->slug($article['title']).'-'.random_int(1000, 9999),
-                'summary' => $article['description'],
+                'summary' => $article['description'] ?? $article['content'] ?? "",
                 'article_url' => $article['url'],
                 'image_url' => $article['urlToImage'],
                 'published_at' => $article['publishedAt'],
