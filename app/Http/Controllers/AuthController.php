@@ -28,8 +28,8 @@ class AuthController extends Controller
             'message' => 'User registered successfully',
             'data' => [
                 'user' => $user,
-                'token' => $token
-            ]
+                'token' => $token,
+            ],
         ]);
     }
 
@@ -40,7 +40,7 @@ class AuthController extends Controller
     {
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
@@ -52,8 +52,8 @@ class AuthController extends Controller
             'message' => 'Login successful',
             'data' => [
                 'user' => $user,
-                'token' => $token
-            ]
+                'token' => $token,
+            ],
         ]);
     }
 
@@ -65,7 +65,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Logged out successfully'
+            'message' => 'Logged out successfully',
         ]);
     }
 }

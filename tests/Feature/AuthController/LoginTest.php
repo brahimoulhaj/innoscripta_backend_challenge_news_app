@@ -12,8 +12,8 @@ test('users can authenticate using api', function () {
         ->assertJsonStructure([
             'data' => [
                 'token',
-                'user'
-            ]
+                'user',
+            ],
         ]);
 });
 

@@ -10,7 +10,7 @@ test('new users can register', function () {
         ->assertJsonStructure([
             'data' => [
                 'token',
-                'user'
-            ]
+                'user',
+            ],
         ]);
 });
