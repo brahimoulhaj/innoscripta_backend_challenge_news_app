@@ -21,7 +21,7 @@ class NewYorkTimesApiSource implements NewsSourceInterface
         $page = 0;
         $data = [];
 
-        while ($page++ < 10) {
+        while ($page < 10) {
             $response = Http::get(url: $source->url . '/articlesearch.json', query: [
                 'api-key' => $source->api_key,
                 'q' => $this->category,
@@ -31,13 +31,13 @@ class NewYorkTimesApiSource implements NewsSourceInterface
 
             if (! $response->successful()) {
                 Log::error('NewYorkTimesApiSource::Error::' . $response->body());
+            } else {
+                $docs = $response->json('response.docs');
+                if (count($docs) === 0) break;
+                $data = array_merge($data, $docs);
             }
 
-            $docs = $response->json('response.docs');
-            if (count($docs) === 0) {
-                break;
-            }
-            $data = array_merge($data, $docs);
+            $page++;
         }
 
         return $data;

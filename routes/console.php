@@ -9,8 +9,12 @@ Artisan::command('news:fetch', function (NewsService $service) {
     DB::transaction(function () use ($service) {
         $this->info('fetching articles...');
         $news = $service->fetchNews();
-        DB::table('articles')->upsert($news, uniqueBy: ['article_url']);
         $this->info('articles fetched');
+        $this->info('saving articles');
+        foreach (collect($news)->chunk(100) as $chunk) {
+            DB::table('articles')->upsert($chunk->toArray(), uniqueBy: ['article_url']);
+            $this->info(count($chunk) . ' saved');
+        }
         $count = Article::count();
         $this->info("articles count: {$count}");
     });

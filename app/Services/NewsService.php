@@ -7,7 +7,10 @@ use App\Models\Source;
 use App\Services\Sources\NewsApiSource;
 use App\Services\Sources\NewYorkTimesApiSource;
 use App\Services\Sources\TheGuardianApiSource;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+
+use function Laravel\Prompts\info;
 
 class NewsService
 {
@@ -24,6 +27,8 @@ class NewsService
             $data = $handler->fetch($source, 'technology');
             $articles = $handler->transform($data);
             $news = array_merge($news, $articles);
+
+            info($handler::class . " -- " . count($articles));
         }
 
         return $news;
@@ -32,16 +37,17 @@ class NewsService
     private function resolveSourceHandler(Source $source): ?NewsSourceInterface
     {
         $handlers = [
-            'news-api' => NewsApiSource::class,
             'the-guardian' => TheGuardianApiSource::class,
+            'news-api' => NewsApiSource::class,
             'new-york-times' => NewYorkTimesApiSource::class
         ];
 
         $handlerClass = $handlers[Str::slug($source->name)] ?? null;
 
         if (! $handlerClass) {
-            return null;
             // throw new \Exception("No handler for source: {$source->name}");
+            Log::error("No handler for source: {$source->name}");
+            return null;
         }
 
         return new $handlerClass;
